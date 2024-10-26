@@ -8,6 +8,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
+
 from flask import Flask, jsonify
 
 
@@ -16,7 +17,7 @@ from flask import Flask, jsonify
 #################################################
 
 # Create engine using the `hawaii.sqlite` database file
-engine = create_engine("sqlite:///../Resources/hawaii.sqlite")
+engine = create_engine("sqlite:///hawaii.sqlite")
 # Declare a Base using `automap_base()`
 Base = automap_base()
 # Use the Base class to reflect the database tables
@@ -54,7 +55,7 @@ def home():
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
         f"/api/v1.0/start (enter as YYYY-MM-DD)<br/>"
-        f"/api/v1.0/start/end (enter as YYYY-MM-DD)<br/>"
+        f"/api/v1.0/start/end (enter as YYYY-MM-DD)"
 
 
     )
@@ -72,7 +73,8 @@ def precipitaion():
     prev_last_date = dt.date(one_year.year, one_year.month, one_year.day)
     
     query_results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= prev_last_date).order_by(Measurement.date).all()
-    
+    session.close()
+
     precipitaion_dict = dict(query_results)
 
     print(f"Results for Precipitaion - {precipitaion_dict}")
@@ -111,6 +113,7 @@ def stations():
 def tobs():
     session = Session(engine)
     query_results = session.query(Measurement.tobs).filter(Measurement.station=="USC00519281").filter(Measurement.date>='2016-08-23').all()
+    session.close()
 
     temp_obs = []
     for date, tobs in query_results:

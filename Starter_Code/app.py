@@ -65,7 +65,7 @@ def home():
 # the last 12 montths of data) to a dictionary using date as the key and prcp as the value.
 # Return the JSON representation of your dictionary
 
-@app.route("/api/v1.0/presicpitation")
+@app.route("/api/v1.0/precipitation")
 def precipitaion():
     session = Session(engine)
 
@@ -112,7 +112,7 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tobs():
     session = Session(engine)
-    query_results = session.query(Measurement.tobs).filter(Measurement.station=="USC00519281").filter(Measurement.date>='2016-08-23').all()
+    query_results = session.query(Measurement.date, Measurement.tobs).filter(Measurement.station=="USC00519281").filter(Measurement.date>='2016-08-23').all()
     session.close()
 
     temp_obs = []
@@ -135,7 +135,7 @@ def tobs():
 @app.route("/api/v1.0/<start>")
 def start(start):
     session = Session(engine)
-    query_results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tons)).filter(Measurement.date >= start).all()
+    query_results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).filter(Measurement.date >= start).all()
     session.close()
 
     temps = []
@@ -152,7 +152,7 @@ def start(start):
 @app.route("/api/v1.0/<start>/<end>")
 def start_and_end(start, end):
     session = Session(engine)
-    query_results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tons)).filter(Measurement.date >= start).filter(Measurement.date <= end).all()
+    query_results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date <= end).all()
     session.close()
 
     temps = []

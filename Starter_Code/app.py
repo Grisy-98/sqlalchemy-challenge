@@ -16,7 +16,7 @@ from flask import Flask, jsonify
 #################################################
 
 # Create engine using the `hawaii.sqlite` database file
-engine = create_engine("Starter_Code/Resources/hawaii.sqlite")
+engine = create_engine("sqlite:///../Resources/hawaii.sqlite")
 # Declare a Base using `automap_base()`
 Base = automap_base()
 # Use the Base class to reflect the database tables
